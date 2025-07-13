@@ -1,73 +1,84 @@
-@font-face {
-  font-family: 'Coolvetica';
-  src: url('https://fonts.cdnfonts.com/s/32949/Coolvetica.woff') format('woff');
-}
+@import url('https://fonts.googleapis.com/css2?family=Coolvetica&display=swap');
 
 body {
-  font-family: 'Coolvetica', sans-serif;
-  background: #f0f0f0;
+  background-color: #1e1e1e;
   color: white;
-  margin: 20px;
-  text-align: center;
+  font-family: 'Coolvetica', sans-serif;
+  margin: 0;
+  padding: 1rem;
 }
 
 h1 {
-  margin-bottom: 10px;
-  color: #333;
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
 }
 
-#creditos-acumulados {
-  color: #333;
-  margin-bottom: 20px;
+footer {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  color: white;
 }
 
 #malla {
   display: grid;
   grid-template-rows: repeat(5, auto);
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  max-width: 1400px;
-  margin: 0 auto;
+  gap: 2rem;
+}
+
+.year {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .semestre {
-  background: #555;
-  border: 2px solid white;
-  padding: 10px;
-}
-
-.semestre h3 {
-  margin: 0 0 5px 0;
-  font-size: 1.1rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+  overflow-x: auto;
 }
 
 .ramo {
-  margin: 5px 0;
-  padding: 8px;
+  padding: 1rem;
   border: 2px solid white;
-  border-radius: 6px;
+  border-radius: 10px;
+  color: white;
   cursor: pointer;
-  transition: transform 0.2s;
+  min-width: 200px;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: transform 0.2s, filter 0.3s;
 }
 
 .ramo:hover {
-  transform: scale(1.03);
+  transform: scale(1.05);
+  filter: brightness(1.1);
 }
 
-.ramo.locked {
-  opacity: 0.5;
-  cursor: not-allowed;
+/* Créditos por color */
+.creditos-8        { background-color: #F94144; }
+.creditos-7        { background-color: #F3722C; }
+.creditos-6        { background-color: #F9844A; }
+.creditos-5        { background-color: #F9C74F; }
+.creditos-4        { background-color: #90BE6D; }
+.creditos-3        { background-color: #43AA8B; }
+.creditos-2        { background-color: #277DA1; }
+.creditos-pp       { background-color: #9e0059; }
+
+/* Completado */
+.completado {
+  opacity: 0.6;
+  text-decoration: line-through;
+  filter: grayscale(100%);
 }
 
-.ramo.aprobado {
-  opacity: 1;
-}
-
-.credits {
-  font-size: 0.8rem;
-}
-
-footer {
-  margin-top: 30px;
-  color: #666;
+/* Créditos acumulados */
+#creditos-acumulados {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
 }
