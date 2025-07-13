@@ -1,77 +1,67 @@
-const mallaDiv = document.getElementById("malla");
-const creditosDiv = document.getElementById("creditos-acumulados");
-
-let creditosAcumulados = 0;
-const aprobados = new Set();
-
-function estaDesbloqueado(ramo) {
-  if (ramo.creditos_requiere && creditosAcumulados < ramo.creditos_requiere) return false;
-  for (const prereq of ramo.requiere) {
-    if (!aprobados.has(prereq)) return false;
-  }
-  return true;
+const malla = document.getElementById("malla");
+const creditosInfo = document.getElementById("creditos-acumulados");
+let aprobados = new Set(), creditos = 0;
+const creditColorMap = {
+  8: "#F94144",
+  7: "#F3722C",
+  6: "#F9844A",
+  5: "#F9C74F",
+  4: "#90BE6D",
+  3: "#43AA8B",
+  2: "#277DA1"
+};
+function colorRamo(cr, id) {
+  if (/pp_[iI]/.test(id)) return "#9e0059";
+  return creditColorMap[cr] || "#777";
 }
-
-function mostrarMalla() {
-  mallaDiv.innerHTML = "";
-
-  const semestres = {};
-  ramos.forEach(ramo => {
-    if (!semestres[ramo.semestre]) semestres[ramo.semestre] = [];
-    semestres[ramo.semestre].push(ramo);
-  });
-
-  for (const semestre of Object.keys(semestres)) {
-    const columna = document.createElement("div");
-    columna.className = "semestre";
-
-    const titulo = document.createElement("h3");
-    titulo.textContent = semestre;
-    columna.appendChild(titulo);
-
-    for (const ramo of semestres[semestre]) {
-      const ramoDiv = document.createElement("div");
-      ramoDiv.className = "ramo";
-      ramoDiv.id = ramo.id;
-      ramoDiv.textContent = ramo.nombre;
-
-      const cred = document.createElement("div");
-      cred.className = "creditos";
-      cred.textContent = `${ramo.creditos} créditos`;
-      ramoDiv.appendChild(cred);
-
-      if (aprobados.has(ramo.id)) {
-        ramoDiv.classList.add("aprobado");
-      } else if (!estaDesbloqueado(ramo)) {
-        ramoDiv.classList.add("locked");
-      }
-
-      ramoDiv.addEventListener("click", () => {
-        if (aprobados.has(ramo.id)) {
-          aprobados.delete(ramo.id);
-          creditosAcumulados -= ramo.creditos;
-        } else {
-          if (!estaDesbloqueado(ramo)) {
-            alert("Debes aprobar prerrequisitos o tener los créditos necesarios.");
-            return;
-          }
-          aprobados.add(ramo.id);
-          creditosAcumulados += ramo.creditos;
-        }
-        actualizarUI();
-      });
-
-      columna.appendChild(ramoDiv);
+function estaDes(r) {
+  if(r.creditos_requiere && creditos<r.creditos_requiere) return false;
+  return r.requiere.every(x=>aprobados.has(x));
+}
+function dibujar() {
+  malla.innerHTML="";
+  for(let y=1;y<=5;y++){
+    for(let s=1;s<=2;s++){
+      let col = document.createElement("div");
+      col.className="semestre";
+      col.innerHTML=`<h3>Año ${y} - Sem ${s}</h3>`;
+      ramos.filter(r=>r.year===y&&r.sem===s)
+        .forEach(r=>{
+          let d=document.createElement("div");
+          d.className="ramo";
+          if(!estaDes(r)) d.classList.add("locked");
+          if(aprobados.has(r.id)) d.classList.add("aprobado");
+          d.style.background = colorRamo(r.creditos,r.id);
+          d.textContent = r.nombre;
+          let c=document.createElement("div");
+          c.className="credits"; c.textContent=`${r.creditos} cr`;
+          d.appendChild(c);
+          d.onclick=()=>{
+            if(d.classList.contains("locked")) return;
+            if(aprobados.has(r.id)){
+              aprobados.delete(r.id); creditos-=r.creditos;
+            } else {
+              aprobados.add(r.id); creditos+=r.creditos;
+            }
+            actualizar();
+          };
+          col.appendChild(d);
+        });
+      malla.appendChild(col);
     }
-
-    mallaDiv.appendChild(columna);
   }
-
-  creditosDiv.textContent = `Créditos acumulados: ${creditosAcumulados}`;
+  creditosInfo.textContent=`Créditos acumulados: ${creditos}`;
 }
-
-function actualizarUI() {
-  mostrarMalla();
+function actualizar(){
+  dibujar();
+  // Confeti si completaste un semestre
+  for(let y=1;y<=5;y++){
+    for(let s=1;s<=2;s++){
+      let arr=ramos.filter(r=>r.year===y&&r.sem===s);
+      if(arr.every(r=>aprobados.has(r.id))){
+        confetti();
+      }
+    }
+  }
 }
-
-mostrarMalla();
+dibujar();
