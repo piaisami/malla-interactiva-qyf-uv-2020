@@ -1,67 +1,73 @@
+@font-face {
+  font-family: 'Coolvetica';
+  src: url('https://fonts.cdnfonts.com/s/32949/Coolvetica.woff') format('woff');
+}
+
 body {
-  font-family: sans-serif;
-  background-color: #fff0f5; /* Rosa claro */
-  margin: 0;
-  padding: 20px;
+  font-family: 'Coolvetica', sans-serif;
+  background: #f0f0f0;
+  color: white;
+  margin: 20px;
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 10px;
+  color: #333;
 }
 
 #creditos-acumulados {
-  font-size: 18px;
+  color: #333;
   margin-bottom: 20px;
 }
 
 #malla {
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: max-content;
-  gap: 20px;
-  overflow-x: auto;
-  padding-bottom: 20px;
+  grid-template-rows: repeat(5, auto);
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .semestre {
-  background-color: #ffe4f0;
+  background: #555;
+  border: 2px solid white;
   padding: 10px;
-  border-radius: 12px;
-  min-width: 220px;
-  box-shadow: 0 0 5px #d88ea0;
 }
 
 .semestre h3 {
-  text-align: center;
-  color: #c2185b;
+  margin: 0 0 5px 0;
+  font-size: 1.1rem;
 }
 
 .ramo {
-  background-color: #fff;
-  border: 2px solid #c2185b;
-  border-radius: 8px;
-  padding: 10px;
-  margin: 8px 0;
+  margin: 5px 0;
+  padding: 8px;
+  border: 2px solid white;
+  border-radius: 6px;
   cursor: pointer;
-  color: #333;
-  position: relative;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s;
 }
 
 .ramo:hover {
-  transform: scale(1.02);
-}
-
-.ramo.aprobado {
-  background-color: #f8bbd0;
-  border-color: #880e4f;
+  transform: scale(1.03);
 }
 
 .ramo.locked {
-  background-color: #eee;
-  color: #aaa;
-  border-style: dashed;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-.creditos {
-  font-size: 12px;
-  margin-top: 5px;
-  color: #555;
+.ramo.aprobado {
+  opacity: 1;
+}
+
+.credits {
+  font-size: 0.8rem;
+}
+
+footer {
+  margin-top: 30px;
+  color: #666;
 }
